@@ -21,7 +21,7 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;600;700&display=swap');
         
-        body { background-color: #f4f6fb; color: #1e293b; }
+        body { background-color: #f4f6fb; color: #1e293b; transition: all 0.3s ease; }
 
         .preview-container {
             min-height: 500px;
@@ -66,17 +66,20 @@
     <div class="max-w-7xl mx-auto">
         <!-- 상단 유틸리티 바 -->
         <div class="flex justify-end gap-3 mb-2 relative z-10">
+            <button onclick="toggleLanguage()" id="langToggleBtn" class="text-slate-600 hover:text-indigo-600 bg-white border border-slate-200 hover:border-indigo-200 px-4 py-2 rounded-full text-sm font-bold transition-all shadow-sm flex items-center gap-2">
+                <i class="fas fa-globe"></i> <span>English</span>
+            </button>
             <button onclick="openHelpModal()" class="text-indigo-600 hover:text-indigo-800 bg-white border border-indigo-100 hover:bg-indigo-50 px-4 py-2 rounded-full text-sm font-bold transition-all shadow-sm flex items-center gap-2">
-                <i class="fas fa-question-circle"></i> 사용 방법
+                <i class="fas fa-question-circle"></i> <span data-i18n="howToUse">사용 방법</span>
             </button>
         </div>
 
         <!-- 헤더 -->
         <header class="text-center mb-8 -mt-6">
-            <h1 class="text-3xl font-bold text-indigo-600 flex items-center justify-center gap-2 drop-shadow-sm">
+            <h1 class="text-3xl font-bold text-indigo-600 flex items-center justify-center gap-2 drop-shadow-sm" data-i18n="mainTitle">
                 <i class="fas fa-code"></i> 스트링 문법 도우미
             </h1>
-            <p class="text-indigo-500 mt-2 font-medium">손쉬운 텍스트 태깅과 실시간 렌더링 확인</p>
+            <p class="text-indigo-500 mt-2 font-medium" data-i18n="subTitle">손쉬운 텍스트 태깅과 실시간 렌더링 확인</p>
         </header>
 
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -88,25 +91,25 @@
                     <div class="flex flex-wrap items-center justify-between mb-5 pb-5 border-b border-indigo-100">
                         <div class="flex items-center gap-3">
                             <span class="text-sm font-semibold text-slate-600 flex items-center">
-                                <i class="fas fa-palette mr-1.5 text-indigo-500"></i> 색상 지정:
+                                <i class="fas fa-palette mr-1.5 text-indigo-500"></i> <span data-i18n="selectColor">색상 지정:</span>
                             </span>
                             <div class="flex items-center gap-2 bg-white p-1 rounded-lg border border-slate-200 shadow-inner">
                                 <input type="color" id="colorPicker" class="w-8 h-8 border-none cursor-pointer rounded bg-transparent" value="#00ff62">
                                 <input type="text" id="hexInput" class="bg-transparent border-none text-sm w-24 font-mono text-center focus:outline-none uppercase" value="#00FF62">
                             </div>
-                            <button onclick="applyColorTag()" class="bg-indigo-500 hover:bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors shadow-md shadow-indigo-200">
+                            <button onclick="applyColorTag()" class="bg-indigo-500 hover:bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors shadow-md shadow-indigo-200" data-i18n="applyColor">
                                 색상 적용
                             </button>
                         </div>
                         
-                        <!-- 태그 제거 버튼 추가 -->
+                        <!-- 태그 제거 버튼 -->
                         <button onclick="removeSelectedTags()" class="text-slate-500 hover:text-amber-600 bg-slate-50 hover:bg-amber-50 border border-slate-200 hover:border-amber-200 px-3 py-1.5 rounded-lg text-sm font-semibold transition-colors flex items-center gap-1.5" title="드래그한 영역의 HTML 태그를 모두 지웁니다">
-                            <i class="fas fa-eraser"></i> 태그 제거
+                            <i class="fas fa-eraser"></i> <span data-i18n="removeTags">태그 제거</span>
                         </button>
                     </div>
 
                     <!-- 퀵 태그 버튼들 -->
-                    <div class="mb-2 text-xs font-bold text-slate-400 uppercase tracking-wider">퀵 태그</div>
+                    <div class="mb-2 text-xs font-bold text-slate-400 uppercase tracking-wider" data-i18n="quickTags">퀵 태그</div>
                     <div id="toolbar" class="flex flex-wrap gap-2">
                         <!-- 동적 생성됨 -->
                     </div>
@@ -117,7 +120,7 @@
                     <div class="relative group h-full flex flex-col">
                         <div class="flex justify-between items-center mb-2">
                             <label class="flex items-center gap-2 text-sm font-bold text-indigo-600 uppercase tracking-wider">
-                                <i class="fas fa-edit"></i> 스트링 에디터
+                                <i class="fas fa-edit"></i> <span data-i18n="stringEditor">스트링 에디터</span>
                             </label>
                         </div>
                         <textarea id="sourceInput" class="textarea-custom flex-1 w-full border border-indigo-100 bg-[#fafafa] focus:bg-white rounded-xl p-4 text-gray-800 shadow-inner focus:ring-2 focus:ring-indigo-300 outline-none leading-relaxed" placeholder="여기에 텍스트를 입력하고 드래그하여 태그를 적용해보세요!"></textarea>
@@ -126,10 +129,10 @@
                     <!-- 하단 액션 버튼 -->
                     <div class="flex justify-between items-center mt-3 pt-4 border-t border-slate-100">
                         <button onclick="clearText()" class="text-slate-400 hover:text-red-500 transition-colors p-2 rounded-lg hover:bg-slate-50" title="전체 지우기">
-                            <i class="fas fa-trash-alt text-lg"></i> 전체 지우기
+                            <i class="fas fa-trash-alt text-lg"></i> <span data-i18n="clearAll">전체 지우기</span>
                         </button>
                         <button onclick="copyToClipboard()" class="flex items-center gap-2 bg-slate-800 text-white px-8 py-2.5 rounded-xl hover:bg-slate-900 transition-all font-bold shadow-md text-sm">
-                            <i class="fas fa-copy text-lg"></i> 결과물 복사
+                            <i class="fas fa-copy text-lg"></i> <span data-i18n="copyResult">결과물 복사</span>
                         </button>
                     </div>
                 </div>
@@ -138,7 +141,7 @@
             <!-- 오른쪽: 실시간 미리보기 -->
             <div class="flex flex-col drop-shadow-lg h-full">
                 <div class="bg-slate-800 px-4 py-3 rounded-t-2xl flex justify-between items-center border-b border-slate-700">
-                    <span class="text-sm font-semibold text-white flex items-center gap-2 tracking-wide"><i class="fas fa-eye text-indigo-400"></i> 실시간 렌더링 미리보기</span>
+                    <span class="text-sm font-semibold text-white flex items-center gap-2 tracking-wide"><i class="fas fa-eye text-indigo-400"></i> <span data-i18n="livePreviewTitle">실시간 렌더링 미리보기</span></span>
                     <div class="flex gap-2">
                         <div class="w-3 h-3 rounded-full bg-red-500 border border-red-600"></div>
                         <div class="w-3 h-3 rounded-full bg-yellow-400 border border-yellow-500"></div>
@@ -161,27 +164,27 @@
         <div class="mt-8 glass-panel p-6 rounded-2xl shadow-sm border border-slate-200">
             <div class="flex justify-between items-center mb-5">
                 <h2 class="text-lg font-bold text-indigo-600 flex items-center gap-2">
-                    <i class="fas fa-cog text-indigo-400"></i> 커스텀 태그 규칙 관리
+                    <i class="fas fa-cog text-indigo-400"></i> <span data-i18n="customRuleTitle">커스텀 태그 규칙 관리</span>
                 </h2>
-                <span class="text-xs text-slate-400 font-medium"><i class="fas fa-save mr-1"></i>추가한 규칙은 브라우저에 자동 저장됩니다</span>
+                <span class="text-xs text-slate-400 font-medium"><i class="fas fa-save mr-1"></i><span data-i18n="customRuleSub">추가한 규칙은 브라우저에 자동 저장됩니다</span></span>
             </div>
             
             <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6 bg-slate-50 p-4 rounded-xl border border-slate-100">
                 <div>
-                    <label class="block text-xs font-semibold text-slate-500 mb-1.5">버튼 이름</label>
+                    <label class="block text-xs font-semibold text-slate-500 mb-1.5" data-i18n="btnNameLabel">버튼 이름</label>
                     <input type="text" id="ruleName" class="w-full border border-slate-200 bg-white text-slate-800 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-300 transition-colors" placeholder="예: 파란색">
                 </div>
                 <div>
-                    <label class="block text-xs font-semibold text-slate-500 mb-1.5">시작 태그</label>
+                    <label class="block text-xs font-semibold text-slate-500 mb-1.5" data-i18n="startTagLabel">시작 태그</label>
                     <input type="text" id="ruleStart" class="w-full border border-slate-200 bg-white text-slate-800 rounded-lg px-3 py-2 text-sm font-mono focus:outline-none focus:ring-2 focus:ring-indigo-300 transition-colors" placeholder="예: <span class='blue'>">
                 </div>
                 <div>
-                    <label class="block text-xs font-semibold text-slate-500 mb-1.5">종료 태그</label>
+                    <label class="block text-xs font-semibold text-slate-500 mb-1.5" data-i18n="endTagLabel">종료 태그</label>
                     <input type="text" id="ruleEnd" class="w-full border border-slate-200 bg-white text-slate-800 rounded-lg px-3 py-2 text-sm font-mono focus:outline-none focus:ring-2 focus:ring-indigo-300 transition-colors" placeholder="예: </span>">
                 </div>
                 <div class="flex items-end">
                     <button onclick="addCustomRule()" class="w-full bg-slate-800 hover:bg-slate-900 text-white px-4 py-2 rounded-lg font-semibold transition-all flex items-center justify-center gap-2 shadow-sm">
-                        <i class="fas fa-plus"></i> 규칙 추가
+                        <i class="fas fa-plus"></i> <span data-i18n="addRuleBtn">규칙 추가</span>
                     </button>
                 </div>
             </div>
@@ -197,7 +200,7 @@
         <div class="bg-white rounded-2xl shadow-2xl w-full max-w-3xl overflow-hidden transform scale-95 transition-transform duration-300 border border-slate-100" id="helpModalContent">
             <div class="bg-indigo-50 px-6 py-4 border-b border-indigo-100 flex justify-between items-center">
                 <h3 class="text-xl font-bold text-indigo-800 flex items-center gap-2">
-                    <i class="fas fa-book-open text-indigo-500"></i> 상세 사용 가이드
+                    <i class="fas fa-book-open text-indigo-500"></i> <span data-i18n="helpTitle">상세 사용 가이드</span>
                 </h3>
                 <button onclick="closeHelpModal()" class="text-slate-400 hover:text-red-500 transition-colors p-1.5 rounded-lg hover:bg-white">
                     <i class="fas fa-times text-xl"></i>
@@ -208,8 +211,8 @@
                 <div class="flex gap-4 items-start">
                     <div class="flex-shrink-0 w-8 h-8 bg-indigo-100 text-indigo-600 rounded-full flex items-center justify-center font-bold">1</div>
                     <div>
-                        <h4 class="font-bold text-lg text-slate-800 mb-1">텍스트 입력 및 기본 태그 적용</h4>
-                        <p class="text-sm leading-relaxed text-slate-600">
+                        <h4 class="font-bold text-lg text-slate-800 mb-1" data-i18n="help1Title">텍스트 입력 및 기본 태그 적용</h4>
+                        <p class="text-sm leading-relaxed text-slate-600" id="help1Desc">
                             <strong>스트링 에디터</strong>에 텍스트를 입력합니다. 태그를 입히고 싶은 부분을 마우스로 <span class="bg-indigo-50 px-1 rounded text-indigo-600 font-semibold">드래그하여 선택</span>한 후, 
                             툴바에 있는 <strong>퀵 태그 버튼(강조, 기울임 등)</strong>을 클릭하면 즉시 태그가 적용됩니다.
                         </p>
@@ -219,8 +222,8 @@
                 <div class="flex gap-4 items-start">
                     <div class="flex-shrink-0 w-8 h-8 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center font-bold">2</div>
                     <div>
-                        <h4 class="font-bold text-lg text-slate-800 mb-1">원하는 색상으로 지정</h4>
-                        <p class="text-sm leading-relaxed text-slate-600">
+                        <h4 class="font-bold text-lg text-slate-800 mb-1" data-i18n="help2Title">원하는 색상으로 지정</h4>
+                        <p class="text-sm leading-relaxed text-slate-600" id="help2Desc">
                             글자 색상을 바꾸고 싶다면, 툴바 좌측의 <strong>색상 팔레트</strong>를 클릭하거나 <strong>HEX 코드(예: #FF0000)</strong>를 직접 입력하세요.
                             텍스트를 드래그하고 <strong>색상 적용</strong> 버튼을 누르면 해당 색상의 스타일 태그가 씌워집니다.
                         </p>
@@ -230,8 +233,8 @@
                 <div class="flex gap-4 items-start">
                     <div class="flex-shrink-0 w-8 h-8 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center font-bold">3</div>
                     <div>
-                        <h4 class="font-bold text-lg text-slate-800 mb-1">잘못 입힌 태그 제거하기</h4>
-                        <p class="text-sm leading-relaxed text-slate-600">
+                        <h4 class="font-bold text-lg text-slate-800 mb-1" data-i18n="help3Title">잘못 입힌 태그 제거하기</h4>
+                        <p class="text-sm leading-relaxed text-slate-600" id="help3Desc">
                             실수로 태그를 잘못 적용했거나 순수 텍스트만 남기고 싶을 때는, 
                             해당 영역을 드래그하고 우측 상단의 <strong><i class="fas fa-eraser"></i> 태그 제거</strong> 버튼을 눌러주세요. 내용물은 유지되고 태그만 깔끔하게 지워집니다.
                         </p>
@@ -241,8 +244,8 @@
                 <div class="flex gap-4 items-start">
                     <div class="flex-shrink-0 w-8 h-8 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center font-bold">4</div>
                     <div>
-                        <h4 class="font-bold text-lg text-slate-800 mb-1">나만의 커스텀 규칙 저장</h4>
-                        <p class="text-sm leading-relaxed text-slate-600">
+                        <h4 class="font-bold text-lg text-slate-800 mb-1" data-i18n="help4Title">나만의 커스텀 규칙 저장</h4>
+                        <p class="text-sm leading-relaxed text-slate-600" id="help4Desc">
                             팀 프로젝트마다 자주 쓰는 태그(예: <code>&lt;color name="red"&gt;</code>)가 있다면, 
                             하단 패널에 <strong>버튼 이름, 시작 태그, 종료 태그</strong>를 입력하고 규칙을 추가하세요. 
                             <span class="text-emerald-600 font-semibold">추가된 규칙은 브라우저에 영구적으로 자동 저장</span>됩니다.
@@ -253,8 +256,8 @@
                 <div class="flex gap-4 items-start">
                     <div class="flex-shrink-0 w-8 h-8 bg-purple-100 text-purple-600 rounded-full flex items-center justify-center font-bold">5</div>
                     <div>
-                        <h4 class="font-bold text-lg text-slate-800 mb-1">실시간 확인 및 결과물 내보내기</h4>
-                        <p class="text-sm leading-relaxed text-slate-600">
+                        <h4 class="font-bold text-lg text-slate-800 mb-1" data-i18n="help5Title">실시간 확인 및 결과물 내보내기</h4>
+                        <p class="text-sm leading-relaxed text-slate-600" id="help5Desc">
                             우측의 <strong>LIVE PREVIEW</strong> 화면에서 텍스트가 어떻게 렌더링되는지 실시간으로 확인하세요. 
                             작업이 완료되면 에디터 하단의 <strong><i class="fas fa-copy"></i> 결과물 복사</strong> 버튼을 눌러 클립보드에 담아갈 수 있습니다.
                         </p>
@@ -263,7 +266,7 @@
             </div>
 
             <div class="bg-slate-50 px-6 py-4 border-t border-slate-100 flex justify-end">
-                <button onclick="closeHelpModal()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-8 py-2 rounded-xl font-bold transition-colors shadow-md">
+                <button onclick="closeHelpModal()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-8 py-2 rounded-xl font-bold transition-colors shadow-md" data-i18n="confirmBtn">
                     확인
                 </button>
             </div>
@@ -277,6 +280,152 @@
     </div>
 
     <script>
+        // 다국어(i18n) 번역 데이터
+        const translations = {
+            ko: {
+                howToUse: "사용 방법",
+                mainTitle: "<i class='fas fa-code'></i> 스트링 문법 도우미",
+                subTitle: "손쉬운 텍스트 태깅과 실시간 렌더링 확인",
+                selectColor: "색상 지정:",
+                applyColor: "색상 적용",
+                removeTags: "태그 제거",
+                quickTags: "퀵 태그",
+                stringEditor: "스트링 에디터",
+                clearAll: "전체 지우기",
+                copyResult: "결과물 복사",
+                livePreviewTitle: "실시간 렌더링 미리보기",
+                customRuleTitle: "커스텀 태그 규칙 관리",
+                customRuleSub: "추가한 규칙은 브라우저에 자동 저장됩니다",
+                btnNameLabel: "버튼 이름",
+                startTagLabel: "시작 태그",
+                endTagLabel: "종료 태그",
+                addRuleBtn: "규칙 추가",
+                helpTitle: "상세 사용 가이드",
+                help1Title: "텍스트 입력 및 기본 태그 적용",
+                help2Title: "원하는 색상으로 지정",
+                help3Title: "잘못 입힌 태그 제거하기",
+                help4Title: "나만의 커스텀 규칙 저장",
+                help5Title: "실시간 확인 및 결과물 내보내기",
+                confirmBtn: "확인",
+                phSource: "여기에 텍스트를 입력하고 드래그하여 태그를 적용해보세요!",
+                phRuleName: "예: 파란색",
+                phRuleStart: "예: <span class='blue'>",
+                phRuleEnd: "예: </span>",
+                emptyContent: "내용이 비어 있습니다.",
+                defaultRules: {
+                    d1: "강조 (Bold)", d2: "형광펜 (Mark)", d3: "기울임 (Italic)", d4: "밑줄 (Underline)", d5: "빨간 글씨"
+                },
+                toast: {
+                    dragFirst: "에디터에서 텍스트를 드래그한 후 버튼을 눌러주세요!",
+                    dragRemove: "태그를 제거할 영역을 먼저 드래그해주세요.",
+                    removed: "선택한 영역의 태그가 제거되었습니다.",
+                    fillAll: "모든 필드를 입력해주세요.",
+                    ruleSaved: "새 규칙이 저장되었습니다!",
+                    ruleDeleted: "규칙이 삭제되었습니다.",
+                    textCleared: "텍스트가 삭제되었습니다.",
+                    nothingCopy: "복사할 내용이 없습니다.",
+                    copied: "텍스트가 클립보드에 복사되었습니다!"
+                },
+                helpHTML: [
+                    "<strong>스트링 에디터</strong>에 텍스트를 입력합니다. 태그를 입히고 싶은 부분을 마우스로 <span class='bg-indigo-50 px-1 rounded text-indigo-600 font-semibold'>드래그하여 선택</span>한 후, 툴바에 있는 <strong>퀵 태그 버튼(강조, 기울임 등)</strong>을 클릭하면 즉시 태그가 적용됩니다.",
+                    "글자 색상을 바꾸고 싶다면, 툴바 좌측의 <strong>색상 팔레트</strong>를 클릭하거나 <strong>HEX 코드(예: #FF0000)</strong>를 직접 입력하세요. 텍스트를 드래그하고 <strong>색상 적용</strong> 버튼을 누르면 해당 색상의 스타일 태그가 씌워집니다.",
+                    "실수로 태그를 잘못 적용했거나 순수 텍스트만 남기고 싶을 때는, 해당 영역을 드래그하고 우측 상단의 <strong><i class='fas fa-eraser'></i> 태그 제거</strong> 버튼을 눌러주세요. 내용물은 유지되고 태그만 깔끔하게 지워집니다.",
+                    "팀 프로젝트마다 자주 쓰는 태그(예: <code>&lt;color name=\"red\"&gt;</code>)가 있다면, 하단 패널에 <strong>버튼 이름, 시작 태그, 종료 태그</strong>를 입력하고 규칙을 추가하세요. <span class='text-emerald-600 font-semibold'>추가된 규칙은 브라우저에 영구적으로 자동 저장</span>됩니다.",
+                    "우측의 <strong>LIVE PREVIEW</strong> 화면에서 텍스트가 어떻게 렌더링되는지 실시간으로 확인하세요. 작업이 완료되면 에디터 하단의 <strong><i class='fas fa-copy'></i> 결과물 복사</strong> 버튼을 눌러 클립보드에 담아갈 수 있습니다."
+                ]
+            },
+            en: {
+                howToUse: "How to Use",
+                mainTitle: "<i class='fas fa-code'></i> String Syntax Helper",
+                subTitle: "Easy text tagging and real-time rendering preview",
+                selectColor: "Select Color:",
+                applyColor: "Apply Color",
+                removeTags: "Remove Tags",
+                quickTags: "Quick Tags",
+                stringEditor: "String Editor",
+                clearAll: "Clear All",
+                copyResult: "Copy Result",
+                livePreviewTitle: "Real-time Rendering Preview",
+                customRuleTitle: "Manage Custom Tag Rules",
+                customRuleSub: "Added rules are automatically saved in browser",
+                btnNameLabel: "Button Name",
+                startTagLabel: "Start Tag",
+                endTagLabel: "End Tag",
+                addRuleBtn: "Add Rule",
+                helpTitle: "Detailed User Guide",
+                help1Title: "Text Input and Basic Tagging",
+                help2Title: "Apply Custom Colors",
+                help3Title: "Remove Unwanted Tags",
+                help4Title: "Save Custom Rules",
+                help5Title: "Live Preview and Export",
+                confirmBtn: "Confirm",
+                phSource: "Enter your text here, drag to select, and apply tags!",
+                phRuleName: "e.g., Blue Text",
+                phRuleStart: "e.g., <span class='blue'>",
+                phRuleEnd: "e.g., </span>",
+                emptyContent: "Content is empty.",
+                defaultRules: {
+                    d1: "Bold", d2: "Highlight (Mark)", d3: "Italic", d4: "Underline", d5: "Red Text"
+                },
+                toast: {
+                    dragFirst: "Please drag and select text in the editor first!",
+                    dragRemove: "Please select the area to remove tags first.",
+                    removed: "Tags in the selected area have been removed.",
+                    fillAll: "Please fill in all fields.",
+                    ruleSaved: "New rule saved!",
+                    ruleDeleted: "Rule deleted.",
+                    textCleared: "Text cleared.",
+                    nothingCopy: "Nothing to copy.",
+                    copied: "Text copied to clipboard!"
+                },
+                helpHTML: [
+                    "Enter text into the <strong>String Editor</strong>. <span class='bg-indigo-50 px-1 rounded text-indigo-600 font-semibold'>Drag and select</span> the part you want to tag, then click the <strong>Quick Tag buttons (Bold, Italic, etc.)</strong> on the toolbar to apply tags instantly.",
+                    "To change the text color, click the <strong>Color Palette</strong> on the left side of the toolbar or enter a <strong>HEX code (e.g., #FF0000)</strong> directly. Select the text and click <strong>Apply Color</strong> to wrap it in a style tag.",
+                    "If you accidentally applied a tag or want to keep only plain text, drag the area and click the <strong><i class='fas fa-eraser'></i> Remove Tags</strong> button at the top right. Tags will be cleanly removed while preserving the content.",
+                    "If you have frequently used tags for team projects (e.g., <code>&lt;color name=\"red\"&gt;</code>), enter the <strong>Button Name, Start Tag, and End Tag</strong> in the bottom panel to add a rule. <span class='text-emerald-600 font-semibold'>Added rules are permanently saved in your browser.</span>",
+                    "Check how the text renders in real-time on the right <strong>LIVE PREVIEW</strong> screen. When done, click the <strong><i class='fas fa-copy'></i> Copy Result</strong> button below the editor to copy it to your clipboard."
+                ]
+            }
+        };
+
+        let currentLang = localStorage.getItem('stringHelper_lang') || 'ko';
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'ko' ? 'en' : 'ko';
+            localStorage.setItem('stringHelper_lang', currentLang);
+            applyLanguage();
+            renderRules(); // 기본 룰 이름 재렌더링
+            updatePreview(); // 미리보기 placeholder 등 재렌더링
+        }
+
+        function applyLanguage() {
+            const t = translations[currentLang];
+            
+            // 토글 버튼 텍스트 변경
+            document.getElementById('langToggleBtn').innerHTML = currentLang === 'ko' ? '<i class="fas fa-globe"></i> <span>English</span>' : '<i class="fas fa-globe"></i> <span>한국어</span>';
+
+            // 단순 텍스트/HTML 교체 (data-i18n 속성 활용)
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (t[key]) el.innerHTML = t[key];
+            });
+
+            // Placeholder 교체
+            document.getElementById('sourceInput').placeholder = t.phSource;
+            document.getElementById('ruleName').placeholder = t.phRuleName;
+            document.getElementById('ruleStart').placeholder = t.phRuleStart;
+            document.getElementById('ruleEnd').placeholder = t.phRuleEnd;
+
+            // 도움말 세부 설명 교체
+            for(let i=1; i<=5; i++) {
+                document.getElementById(`help${i}Desc`).innerHTML = t.helpHTML[i-1];
+            }
+        }
+
+        function getI18nMsg(key) {
+            return translations[currentLang].toast[key] || key;
+        }
+
         // 기본 태그 목록
         const defaultRules = [
             { id: 'd1', name: '강조 (Bold)', start: '<b>', end: '</b>', icon: 'fa-bold', color: 'text-slate-700 bg-white border-slate-200', isDefault: true },
@@ -299,6 +448,7 @@
 
         // 초기화 함수
         window.onload = () => {
+            applyLanguage(); // 초기 언어 세팅
             loadCustomRules(); // 로컬 스토리지에서 커스텀 규칙 불러오기
             renderRules();
             
@@ -352,12 +502,18 @@
             ruleList.innerHTML = '';
 
             allRules.forEach(rule => {
+                // 다국어 처리된 룰 이름 획득
+                let displayName = rule.name;
+                if (rule.isDefault && translations[currentLang].defaultRules[rule.id]) {
+                    displayName = translations[currentLang].defaultRules[rule.id];
+                }
+
                 // 1. 툴바 버튼 추가
                 const btn = document.createElement('button');
                 btn.className = `flex items-center gap-1.5 border px-4 py-1.5 rounded-full text-sm font-semibold transition-all hover:scale-105 shadow-sm hover:shadow ${rule.color || 'text-indigo-600 bg-indigo-50 border-indigo-100'}`;
                 btn.innerHTML = `
                     ${rule.icon ? `<i class="fas ${rule.icon} text-xs opacity-70"></i>` : ''}
-                    ${rule.name}
+                    ${displayName}
                 `;
                 btn.onclick = () => applyTag(rule.start, rule.end);
                 toolbar.appendChild(btn);
@@ -369,12 +525,12 @@
                     <div class="flex flex-col gap-1 overflow-hidden">
                         <div class="flex items-center gap-2">
                             <i class="fas ${rule.icon || 'fa-tag'} text-slate-400 text-xs"></i>
-                            <span class="font-bold text-slate-700 text-sm truncate">${rule.name}</span>
+                            <span class="font-bold text-slate-700 text-sm truncate">${displayName}</span>
                         </div>
                         <code class="text-[10px] bg-slate-50 px-1.5 py-0.5 rounded text-indigo-500 truncate border border-slate-100">${escapeHtml(rule.start)}...${escapeHtml(rule.end)}</code>
                     </div>
                     ${!rule.isDefault ? `
-                        <button onclick="deleteRule('${rule.id}')" class="text-slate-300 hover:text-red-500 transition-colors p-2 rounded hover:bg-red-50 ml-2 shrink-0 opacity-0 group-hover:opacity-100 focus:opacity-100" title="삭제">
+                        <button onclick="deleteRule('${rule.id}')" class="text-slate-300 hover:text-red-500 transition-colors p-2 rounded hover:bg-red-50 ml-2 shrink-0 opacity-0 group-hover:opacity-100 focus:opacity-100" title="Delete">
                             <i class="fas fa-trash"></i>
                         </button>
                     ` : '<span class="text-[9px] text-slate-400 font-bold uppercase shrink-0 border border-slate-200 px-1.5 py-0.5 rounded-full bg-slate-50">Default</span>'}
@@ -390,7 +546,7 @@
             const text = sourceInput.value;
 
             if (start === end) {
-                showToast("에디터에서 텍스트를 드래그한 후 버튼을 눌러주세요!", "fas fa-info-circle text-blue-400");
+                showToast(getI18nMsg('dragFirst'), "fas fa-info-circle text-blue-400");
                 sourceInput.focus();
                 return;
             }
@@ -408,14 +564,14 @@
             updatePreview();
         }
 
-        // [신규 기능] 선택 영역 태그 제거
+        // 선택 영역 태그 제거
         function removeSelectedTags() {
             const start = sourceInput.selectionStart;
             const end = sourceInput.selectionEnd;
             const text = sourceInput.value;
 
             if (start === end) {
-                showToast("태그를 제거할 영역을 먼저 드래그해주세요.", "fas fa-info-circle text-amber-500");
+                showToast(getI18nMsg('dragRemove'), "fas fa-info-circle text-amber-500");
                 sourceInput.focus();
                 return;
             }
@@ -433,7 +589,7 @@
             sourceInput.setSelectionRange(start, start + replacement.length);
             
             updatePreview();
-            showToast("선택한 영역의 태그가 제거되었습니다.", "fas fa-eraser text-amber-500");
+            showToast(getI18nMsg('removed'), "fas fa-eraser text-amber-500");
         }
 
         // 색상 태그 적용
@@ -447,7 +603,8 @@
         // 실시간 미리보기 업데이트
         function updatePreview() {
             const text = sourceInput.value;
-            sourcePreview.innerHTML = text.trim() ? text.replace(/\n/g, '<br>') : '<span class="text-slate-400 italic">내용이 비어 있습니다.</span>';
+            const emptyTxt = translations[currentLang].emptyContent;
+            sourcePreview.innerHTML = text.trim() ? text.replace(/\n/g, '<br>') : `<span class="text-slate-400 italic">${emptyTxt}</span>`;
         }
 
         // 커스텀 규칙 추가
@@ -457,7 +614,7 @@
             const end = document.getElementById('ruleEnd').value.trim();
 
             if (!name || !start || !end) {
-                showToast("모든 필드를 입력해주세요.", "fas fa-exclamation-triangle text-amber-400");
+                showToast(getI18nMsg('fillAll'), "fas fa-exclamation-triangle text-amber-400");
                 return;
             }
 
@@ -479,7 +636,7 @@
             document.getElementById('ruleStart').value = '';
             document.getElementById('ruleEnd').value = '';
             
-            showToast("새 규칙이 저장되었습니다!");
+            showToast(getI18nMsg('ruleSaved'));
         }
 
         // 규칙 삭제
@@ -487,25 +644,25 @@
             customRules = customRules.filter(r => r.id !== id);
             saveCustomRules(); // 로컬 스토리지 업데이트
             renderRules();
-            showToast("규칙이 삭제되었습니다.", "fas fa-trash text-slate-400");
+            showToast(getI18nMsg('ruleDeleted'), "fas fa-trash text-slate-400");
         }
 
         // 전체 지우기
         function clearText() {
             sourceInput.value = '';
             updatePreview();
-            showToast("텍스트가 삭제되었습니다.", "fas fa-eraser text-slate-400");
+            showToast(getI18nMsg('textCleared'), "fas fa-eraser text-slate-400");
         }
 
         // 클립보드 복사
         function copyToClipboard() {
             if (!sourceInput.value.trim()) {
-                showToast("복사할 내용이 없습니다.", "fas fa-times-circle text-red-400");
+                showToast(getI18nMsg('nothingCopy'), "fas fa-times-circle text-red-400");
                 return;
             }
             sourceInput.select();
             document.execCommand('copy');
-            showToast("텍스트가 클립보드에 복사되었습니다!");
+            showToast(getI18nMsg('copied'));
         }
 
         // 토스트 알림
